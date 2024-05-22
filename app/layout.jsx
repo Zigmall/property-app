@@ -1,4 +1,11 @@
 import React from 'react';
+import '@/assets/styles/globals.css';
+
+export const metadata = {
+  title: 'PropertyApp | Find The Perfect Rental',
+  description: 'Find your dream rental property',
+  keywords: 'rental, find rentals, find properties',
+};
 
 const MainLayout = ({ children }) => {
   return (
