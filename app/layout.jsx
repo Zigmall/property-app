@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar';
 import '@/assets/styles/globals.css';
 
 export const metadata = {
-  title: 'PropertyApp | Find The Perfect Rental',
+  title: 'Rent-Base | Find The Perfect Rental',
   description: 'Find your dream rental property',
   keywords: 'rental, find rentals, find properties',
 };
