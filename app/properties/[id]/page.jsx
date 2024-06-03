@@ -6,11 +6,12 @@ import PropertyHeaderImage from '@/components/PropertyHeaderImage';
 import Link from 'next/link';
 import { FaArrowLeft } from 'react-icons/fa';
 import PropertyDetails from '@/components/PropertyDetails';
+import Spinner from '@/components/Spinner';
 
 const PropertyPage = () => {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPropertyData = async () => {
@@ -39,6 +40,7 @@ const PropertyPage = () => {
 
   return (
     <>
+      {loading && <Spinner loading={loading} />}
       {!loading && property && (
         <>
           <PropertyHeaderImage image={property.images[0]} />
