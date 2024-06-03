@@ -9,13 +9,12 @@ import { FaGoogle } from 'react-icons/fa';
 import {
   signIn,
   signOut,
-  ureSession,
   getProviders,
   useSession,
 } from 'next-auth/react';
 
 const Navbar = () => {
-  const { data: session } = useSession;
+  const { data: session } = useSession();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [providers, setProviders] = useState(null);
@@ -29,7 +28,6 @@ const Navbar = () => {
     };
     setAuthProviders();
   }, []);
-  console.log(providers);
 
   return (
     <nav className='bg-blue-700 border-b border-blue-500'>
