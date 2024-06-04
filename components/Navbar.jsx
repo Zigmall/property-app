@@ -6,12 +6,7 @@ import profileDefault from '@/assets/images/profile.png';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaGoogle } from 'react-icons/fa';
-import {
-  signIn,
-  signOut,
-  getProviders,
-  useSession,
-} from 'next-auth/react';
+import { signIn, signOut, getProviders, useSession } from 'next-auth/react';
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -29,7 +24,6 @@ const Navbar = () => {
     };
     setAuthProviders();
   }, []);
-
 
   return (
     <nav className='bg-blue-700 border-b border-blue-500'>
@@ -207,6 +201,10 @@ const Navbar = () => {
                       Saved Properties
                     </Link>
                     <button
+                      onClick={() => {
+                        setIsProfileDropdownOpen(false);
+                        signOut();
+                      }}
                       className='block px-4 py-2 text-sm text-gray-700'
                       role='menuitem'
                       tabIndex='-1'
