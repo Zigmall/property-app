@@ -26,7 +26,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className='bg-blue-700 border-b border-blue-500'>
+    <nav className='bg-blue-700 border-b border-blue-500' >
       <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
         <div className='relative flex h-20 items-center justify-between'>
           <div className='absolute inset-y-0 left-0 flex items-center md:hidden'>
@@ -188,6 +188,9 @@ const Navbar = () => {
                       role='menuitem'
                       tabIndex='-1'
                       id='user-menu-item-0'
+                      onClick={() => {
+                        setIsProfileDropdownOpen(false);
+                      }}
                     >
                       Your Profile
                     </Link>
@@ -197,6 +200,9 @@ const Navbar = () => {
                       role='menuitem'
                       tabIndex='-1'
                       id='user-menu-item-2'
+                      onClick={() => {
+                        setIsProfileDropdownOpen(false);
+                      }}
                     >
                       Saved Properties
                     </Link>
