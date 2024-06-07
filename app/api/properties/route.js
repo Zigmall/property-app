@@ -1,6 +1,7 @@
 import connectDB from '@/config/database';
 import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
+import cloudinary from '@/config/cloudinary';
 
 //GET /api/properties
 export const GET = async (request) => {
@@ -59,10 +60,37 @@ export const POST = async (request) => {
       // images,
     };
 
+    // Upload image(s) to Cloudinary
+    const imageUploadPromises = [];
+    for (const image of images) {
+      const mimeType = image.type;
+      const imageBuffer = await image.arrayBuffer();
+      const imageArray = Array.from(new Uint8Array(imageBuffer));
+      const imageData = Buffer.from(imageArray);
+
+      // Convert the image data to base64
+      const imageBase64 = imageData.toString('base64');
+
+      // Make request to upload to Cloudinary
+      const result = await cloudinary.uploader.upload(
+        `data:${mimeType};base64,${imageBase64}`,
+        {
+          folder: 'rent-base',
+        }
+      );
+      imageUploadPromises.push(result.secure_url);
+    }
+
+    const uploadedImages = await Promise.all(imageUploadPromises);
+    // Add uploaded images to the propertyData object
+    propertyData.images = uploadedImages;
+
     const newProperty = new Property(propertyData);
     await newProperty.save();
 
-    return Response.redirect(`${process.env.NEXTAUTH_URL}/properties/${newProperty._id}`)
+    return Response.redirect(
+      `${process.env.NEXTAUTH_URL}/properties/${newProperty._id}`
+    );
     // return new Response(JSON.stringify({ message: 'Success' }), {
     //   status: 200,
     // });
