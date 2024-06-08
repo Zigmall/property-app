@@ -3,7 +3,7 @@ import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 import cloudinary from '@/config/cloudinary';
 
-//GET /api/properties
+// GET /api/properties
 export const GET = async (request) => {
   try {
     await connectDB();
@@ -57,7 +57,6 @@ export const POST = async (request) => {
         phone: formData.get('seller_info.phone'),
       },
       owner: userId,
-      // images,
     };
 
     // Upload image(s) to Cloudinary
@@ -82,18 +81,17 @@ export const POST = async (request) => {
     }
 
     const uploadedImages = await Promise.all(imageUploadPromises);
+
     // Add uploaded images to the propertyData object
     propertyData.images = uploadedImages;
 
     const newProperty = new Property(propertyData);
-    await newProperty.save();
 
+    // Save in database
+    await newProperty.save();
     return Response.redirect(
       `${process.env.NEXTAUTH_URL}/properties/${newProperty._id}`
     );
-    // return new Response(JSON.stringify({ message: 'Success' }), {
-    //   status: 200,
-    // });
   } catch (error) {
     return new Response('Failed to add property', { status: 500 });
   }
