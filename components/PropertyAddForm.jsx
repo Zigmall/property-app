@@ -4,27 +4,27 @@ import { useState, useEffect } from 'react';
 const PropertyAddForm = () => {
   const [mounted, setMounted] = useState(false);
   const [fields, setFields] = useState({
-    type: 'Apartment',
-    name: 'Test Property',
+    type: '',
+    name: '',
     description: '',
     location: {
       street: '',
-      city: 'Test city',
-      state: 'Test state',
+      city: '',
+      state: '',
       zipcode: '',
     },
-    beds: '3',
-    baths: '2',
-    square_feet: '1800',
+    beds: '',
+    baths: '',
+    square_feet: '',
     amenities: [],
     rates: {
       weekly: '',
-      monthly: '2000',
+      monthly: '',
       nightly: '',
     },
     seller_info: {
       name: '',
-      email: 'test@test.com',
+      email: '',
       phone: '',
     },
     images: [],
@@ -74,7 +74,6 @@ const PropertyAddForm = () => {
     }
 
     // Update state with updated array
-
     setFields((prevFields) => ({
       ...prevFields,
       amenities: updatedAmenities,
@@ -87,8 +86,7 @@ const PropertyAddForm = () => {
     // Clone images array
     const updatedImages = [...fields.images];
 
-
-    console.log(); 
+    console.log();
     for (const file of files) {
       updatedImages.push(file);
     }
@@ -102,7 +100,11 @@ const PropertyAddForm = () => {
 
   return (
     mounted && (
-      <form action='/api/properties' method='POST' encType='multipart/form-data' >
+      <form
+        action='/api/properties'
+        method='POST'
+        encType='multipart/form-data'
+      >
         <h2 className='text-3xl text-center font-semibold mb-6'>
           Add Property
         </h2>
