@@ -41,8 +41,30 @@ const ProfilePage = () => {
     }
   }, [session]);
 
-  const handleDeleteProperty = (id) => {
-    console.log('property to delete: ', id);
+  const handleDeleteProperty = async (propertyId) => {
+    const confirmed = window.confirm(
+      'Are you sure you wont to delete this property?'
+    );
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(`/api/properties/${propertyId}`, {
+        method: 'DELETE',
+      });
+      if (res.status === 200) {
+        // Remove property from state
+        const updatedProperties = properties.filter(
+          (property) => property._id !== propertyId
+        );
+        setProperties(updatedProperties);
+        alert('Property deleted');
+      } else {
+        alert('Failed to delete property');
+      }
+    } catch (error) {
+      alert('Failed to delete property');
+      console.error(error);
+    }
   };
 
   return (
