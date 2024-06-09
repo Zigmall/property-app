@@ -1,14 +1,44 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import profileDefault from '@/assets/images/profile.png';
+import Spinner from '@/components/Spinner';
 
 const ProfilePage = () => {
   const { data: session } = useSession();
   const profileImage = session?.user?.image;
   const profileName = session?.user?.name;
   const profileEmail = session?.user?.email;
+  //   const currentUserId = userId ? userId : session?.user?._id;
+
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserProperties = async (userId) => {
+      if (!userId) {
+        return;
+      }
+      try {
+        const res = await fetch(`/api/properties/user/${userId}`);
+        if (res.status === 2000) {
+          const data = await res.json();
+          setProperties(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Fetch user properties when session is available
+    if (session?.user?.id) {
+      fetchUserProperties(session.user.id);
+    }
+  }, [session]);
   return (
     <section className='bg-blue-50'>
       <div className='container m-auto py-24'>
@@ -64,33 +94,7 @@ const ProfilePage = () => {
                   </button>
                 </div>
               </div>
-              <div className='mb-10'>
-                <a href='/property.html'>
-                  <img
-                    className='h-32 w-full rounded-md object-cover'
-                    src='/images/properties/b1.jpg'
-                    alt='Property 2'
-                  />
-                </a>
-                <div className='mt-2'>
-                  <p className='text-lg font-semibold'>Property Title 2</p>
-                  <p className='text-gray-600'>Address: 456 Elm St</p>
-                </div>
-                <div className='mt-2'>
-                  <a
-                    href='/add-property.html'
-                    className='bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600'
-                  >
-                    Edit
-                  </a>
-                  <button
-                    className='bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600'
-                    type='button'
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
+           
             </div>
           </div>
         </div>
