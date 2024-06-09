@@ -38,12 +38,12 @@ export const DELETE = async (request, { params }) => {
     if (userId !== property.owner.toString()) {
       return new Response('Unauthorized', { status: 401 });
     } else {
-      await Property.deleteOne(propertyId);
+      await Property.deleteOne();
     }
 
     return new Response(`Property ${propertyId} deleted`, { status: 200 });
   } catch (error) {
-    console.cog(error);
+    console.log(error);
     return new Response('Something Went Wrong', { status: 500 });
   }
 };
