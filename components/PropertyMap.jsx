@@ -9,7 +9,7 @@ import pin from '@/assets/images/pin.svg';
 
 const PropertyMap = ({ property }) => {
   const [lat, setLat] = useState(null);
-  const [lon, setLon] = useState(null);
+  const [lng, setLng] = useState(null);
   const [viewport, setViewport] = useState({
     latitude: 0,
     longitude: 0,
@@ -22,7 +22,7 @@ const PropertyMap = ({ property }) => {
   setDefaults({
     key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY,
     language: 'en',
-    region: 'us',
+    region: 'eu',
   });
 
   useEffect(() => {
@@ -31,11 +31,37 @@ const PropertyMap = ({ property }) => {
         `${property.location.street} ${property.location.city} ${property.location.state} ${property.location.zipcode}`
       );
       const { lat, lng } = res.results[0].geometry.location;
-      console.log(lat, lng);
+      setLat(lat);
+      setLng(lng);
+      setViewport({
+        ...viewport,
+        latitude: lat,
+        longitude: lng,
+      });
+      setLoading(false);
     };
+    fetchCoords();
   }, []);
 
-  return <div>PropertyMap</div>;
+  if (loading) {
+    return <Spinner loading={loading} />;
+  }
+
+  return (
+    !loading && (
+      <Map
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+        mapLib={import('mapbox-gl')}
+        initialViewState={{
+          longitude: lng,
+          latitude: lat,
+          zoom: 15,
+        }}
+        style={{ width: '100%', height: 500 }}
+        mapStyle='mapbox://styles/mapbox/streets-v9'
+      ></Map>
+    )
+  );
 };
 
 export default PropertyMap;
