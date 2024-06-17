@@ -1,6 +1,5 @@
 import connectDB from '@/config/database';
 import User from '@/models/User';
-import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +10,6 @@ export const POST = async (request) => {
     const { propertyId } = await request.json();
     const sessionUser = await getSessionUser();
 
-    // if (!session || !session.user) {
     if (!sessionUser || !sessionUser.user) {
       return new Response('User ID is required', { status: 401 });
     }
