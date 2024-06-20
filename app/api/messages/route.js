@@ -8,20 +8,26 @@ export const dynamic = 'force-dynamic';
 
 export const POST = async (request) => {
   try {
-    connectDB();
+    await connectDB();
 
-    const { email, phone, message, property, recipient } = request.json();
+    const { email, phone, message, property, recipient, name } =
+      await request.json();
     const sessionUser = await getSessionUser();
 
     if (!sessionUser || !sessionUser.user) {
-      return new Response('User ID is required', { status: 401 });
+      return new Response(
+        JSON.stringify('You must be log in to send the message', {
+          status: 401,
+        })
+      );
     }
     const { user } = sessionUser;
 
     // Can not send message to self
     if (user.id === recipient) {
+      console.log(user.id, recipient);
       return new Response(
-        JSON.stringify({ message: 'Can not send message to yourself' }),
+        JSON.stringify({ message: 'Can not send a message to yourself' }),
         { status: 400 }
       );
     }
@@ -29,6 +35,7 @@ export const POST = async (request) => {
       sender: user.id,
       recipient,
       property,
+      name,
       email,
       phone,
       body: message,
@@ -36,7 +43,7 @@ export const POST = async (request) => {
 
     await newMessage.save();
 
-    return Response(JSON.stringify({ message: 'Message sent' }), {
+    return new Response(JSON.stringify({ message: 'Message sent' }), {
       status: 200,
     });
   } catch (error) {
