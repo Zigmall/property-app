@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 const Message = ({ message }) => {
   const [isRead, setIsRead] = useState(message.read);
+  const [isDeleted, setIsDeleted] = useState(false);
   const { sender, property, email, phone, body, createdAt } = message;
 
   function formatDate(date) {
@@ -36,7 +37,27 @@ const Message = ({ message }) => {
     }
   };
 
-  useEffect(() => {}, []);
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/messages/${message._id}`, {
+        method: 'DELETE',
+      });
+      if (res.status === 200) {
+        setIsDeleted(true);
+        toast.success('Message deleted successfully');
+      } else {
+        const { message } = await res.json();
+        toast.error(message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  };
+
+  if (isDeleted) {
+    return null;
+  }
 
   return (
     <div className='relative bg-white p-4 rounded-md shadow-md border border-gray-200'>
@@ -83,7 +104,10 @@ const Message = ({ message }) => {
       >
         {isRead ? 'Mark as new' : 'Mark As Read'}
       </button>
-      <button className='mt-4 bg-red-500 text-white py-1 px-3 rounded-md'>
+      <button
+        onClick={handleDelete}
+        className='mt-4 bg-red-500 text-white py-1 px-3 rounded-md'
+      >
         Delete
       </button>
     </div>
