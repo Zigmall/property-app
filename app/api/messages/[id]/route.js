@@ -5,7 +5,7 @@ import { getSessionUser } from '@/utils/getSessionUser';
 export const dynamic = 'force-dynamic';
 
 // PUT /api/messages/:id
-export const PUT = async ({ params }) => {
+export const PUT = async (request, { params }) => {
   try {
     await connectDB();
     const { id } = params;
@@ -25,7 +25,6 @@ export const PUT = async ({ params }) => {
     }
 
     // Verify ownership
-
     if (message.recipient.toString() !== userId) {
       return new Response(JSON.stringify({ message: 'Unauthorized' }), {
         status: 401,

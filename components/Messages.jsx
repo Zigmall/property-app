@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Spinner from '@/components/Spinner';
-import { toast } from 'react-toastify';
 import Message from '@/components/Message';
 
 const Messages = () => {
@@ -15,7 +14,6 @@ const Messages = () => {
 
         if (res.status === 200) {
           const data = await res.json();
-          console.log('data', data);
           setMessages(data);
         }
       } catch (error) {
