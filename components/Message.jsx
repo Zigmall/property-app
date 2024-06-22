@@ -1,11 +1,13 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useGlobalContext } from '@/context/GlobalContext';
 
 const Message = ({ message }) => {
   const [isRead, setIsRead] = useState(message.read);
   const [isDeleted, setIsDeleted] = useState(false);
   const { sender, property, email, phone, body, createdAt } = message;
+  const { setUnreadCount } = useGlobalContext();
 
   function formatDate(date) {
     const year = date.getFullYear();
@@ -26,9 +28,11 @@ const Message = ({ message }) => {
         const { read } = await res.json();
         setIsRead(read);
         if (read) {
+          setUnreadCount((prev) => prev - 1);
           toast.success('Message marked as red');
         } else {
           toast.success('Message marked as new');
+          setUnreadCount((prev) => prev + 1);
         }
       }
     } catch (error) {
@@ -43,6 +47,7 @@ const Message = ({ message }) => {
         method: 'DELETE',
       });
       if (res.status === 200) {
+        setUnreadCount((prev) => prev - 1);
         setIsDeleted(true);
         toast.success('Message deleted successfully');
       } else {
