@@ -20,7 +20,7 @@ export const GET = async (request) => {
       recipient: userId,
       read: false,
     });
-    return new Response(JSON.stringify({ count: unreadMessagesCount }), {
+    return new Response(JSON.stringify(unreadMessagesCount), {
       status: 200,
     });
   } catch (error) {
