@@ -5,13 +5,11 @@ import {
   TwitterIcon,
   TelegramIcon,
   WhatsappIcon,
-  FacebookMessengerIcon,
   EmailIcon,
   FacebookShareButton,
   TwitterShareButton,
   TelegramShareButton,
   WhatsappShareButton,
-  FacebookMessengerShareButton,
   EmailShareButton,
 } from 'react-share';
 
@@ -34,10 +32,6 @@ const ShareButtons = ({ property }) => {
         <TelegramShareButton url={shareUrl} title={property.name}>
           <TelegramIcon size={40} round={true} />
         </TelegramShareButton>
-
-        <FacebookMessengerShareButton url={shareUrl} title={property.name}>
-          <FacebookMessengerIcon size={40} round={true} />
-        </FacebookMessengerShareButton>
 
         <TwitterShareButton
           url={shareUrl}
