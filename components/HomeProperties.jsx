@@ -4,8 +4,8 @@ import { fetchProperties } from '@/utils/requests';
 
 
 const HomeProperties = async () => {
-  const properties = await fetchProperties();
-  const randomProperties = properties
+  const data = await fetchProperties();
+  const randomProperties = data.properties
     .sort(() => Math.random() - Math.random())
     .slice(0, 3);
   return (
